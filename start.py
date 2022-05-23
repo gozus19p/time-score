@@ -1,4 +1,5 @@
 import datetime
+import os
 
 # Writing start timestamp
 now = datetime.datetime.now()
@@ -10,4 +11,10 @@ trace.write(f"{now}")
 counter_file = open("counter.txt", "w")
 counter_file.write('0')
 
+# Issue
+print("Clearing previous issues")
+issues = os.listdir("issues/")
+for issue in issues:
+    file_name = f"issues/{issue}"
+    os.remove(file_name)
 

@@ -17,7 +17,12 @@ print(f"This is the #{issue_prog} issue of the day")
 
 # Updating new counter
 counter_file = open("counter.txt", "w")
-counter_file.write(f"{issue_prog}")
+if issue_prog < 10:
+    counter_write = f"0{issue_prog}"
+else:
+    counter_write = f"{issue_prog}"
+
+counter_file.write(f"{counter_write}")
 
 # Opening new issue file
 new_issue_file = open(f"issues/{issue_prog}-{issue_code.lower()}.txt", "w")

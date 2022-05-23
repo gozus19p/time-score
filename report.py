@@ -14,6 +14,7 @@ if directory_needs_to_be_created:
 
 # Capturing logged issues
 logged_issues = os.listdir('issues')
+logged_issues.sort()
 
 start_time = datetime.datetime.strptime(open('start-trace.txt', 'r').read(), '%Y-%m-%d %H:%M:%S.%f')
 
@@ -52,7 +53,10 @@ for issue_file in logged_issues:
     minutes = difference_in_minutes % 60
 
     issue_detail = issue_name.split("-")
-    report.write(f'{issue_detail[1].upper()}-{issue_detail[2]};{hours_of_work}h {minutes}m;\n')
+    if len(issue_detail) == 3:
+        report.write(f'{issue_detail[1].upper()}-{issue_detail[2]};{hours_of_work}h {minutes}m;\n')
+    else:
+        report.write(f'{issue_detail[1].upper()};{hours_of_work}h {minutes}m;\n')
 
 
 print('Report has been generated successfully')
