@@ -25,6 +25,6 @@ else:
 counter_file.write(f"{counter_write}")
 
 # Opening new issue file
-new_issue_file = open(f"issues/{issue_prog}-{issue_code.lower()}.txt", "w")
+new_issue_file = open(f"issues/{counter_write}-{issue_code.lower()}.txt", "w")
 new_issue_file.write(f"{actual_time}")
 
