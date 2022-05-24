@@ -19,7 +19,8 @@ logged_issues.sort()
 start_time = datetime.datetime.strptime(open('start-trace.txt', 'r').read(), '%Y-%m-%d %H:%M:%S.%f')
 
 time_before = None
-report = open('report.csv', 'w')
+report = open(f'report/{directory_name}.csv', 'w')
+report.write("Issue;Total time;\n")
 for issue_file in logged_issues:
 
     # Copying file inside target directory
@@ -59,6 +60,7 @@ for issue_file in logged_issues:
         report.write(f'{issue_detail[1].upper()};{hours_of_work}h {minutes}m;\n')
 
 
+os.system(f"libreoffice --calc report/{directory_name}.csv &")
+os.system("git add . && git commit -m \"Aggiornamento bash;\" && git push")
 print('Report has been generated successfully')
-
 

@@ -1,6 +1,5 @@
 import sys
 import datetime
-import os
 
 # Defining default formatting pattern
 pattern = '%Y-%m-%d %H:%M:%S.%f'
