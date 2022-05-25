@@ -61,6 +61,8 @@ for issue_file in logged_issues:
 
 
 os.system(f"libreoffice --calc report/{directory_name}.csv &")
-os.system("git add . && git commit -m \"Aggiornamento bash;\" && git push")
+os.system("git add . > /dev/null")
+os.system("git commit -m \"Aggiornamento bash;\" > /dev/null")
+os.system("git push > /dev/null")
 print('Report has been generated successfully')
 
