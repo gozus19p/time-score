@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Installazione startday
-sudo ln -s ./bash/startday.sh /usr/bin/startday
+sudo ln -s /usr/bin/startday ./bash/startday.sh
 chown $USER:$USER /usr/bin/startday
 
 # Installazione score
-sudo ln -s ./bash/score.sh /usr/bin/score
+sudo ln -s /usr/bin/score ./bash/score.sh
 chown $USER:$USER /usr/bin/score
 
 # Installazione startday
-sudo ln -s ./bash/report.sh /usr/bin/report
+sudo ln -s /usr/bin/report ./bash/report.sh
 chown $USER:$USER /usr/bin/report
 
 echo "Installation completed"
