@@ -60,9 +60,9 @@ for issue_file in logged_issues:
         report.write(f'{issue_detail[1].upper()};{hours_of_work}h {minutes}m;\n')
 
 
-os.system(f"libreoffice --calc report/{directory_name}.csv &")
 os.system("git add . > /dev/null")
 os.system("git commit -m \"Aggiornamento bash;\" > /dev/null")
 os.system("git push > /dev/null")
+os.system(f"libreoffice --calc report/{directory_name}.csv &")
 print('Report has been generated successfully')
 
