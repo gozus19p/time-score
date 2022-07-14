@@ -16,14 +16,14 @@ for issue_file in logged_issues:
 
     # Copying file inside target directory
     opened_file = open(f'issues/{issue_file}', 'r')
-    write_file = open(f'archive/{directory_name}/{issue_file}', 'w')
 
     # Reading issue time
     issue_time = opened_file.read()
     issue_name = issue_file.replace(".txt", "")
 
+    add_work_minutes = True
     if 'pausa' in str.lower(issue_name):
-        continue
+        add_work_minutes = False
 
     issue_datetime = datetime.datetime.strptime(issue_time, '%Y-%m-%d %H:%M:%S.%f')
 
@@ -42,7 +42,10 @@ for issue_file in logged_issues:
     # Calculating difference in minutes
     difference_in_minutes = after_minutes - before_minutes
 
-    worked_minutes += difference_in_minutes
+    if add_work_minutes:
+        worked_minutes += difference_in_minutes
+    else:
+        worked_minutes -= difference_in_minutes
 
 expected_worked_minutes = 60 * 8
 total_minutes_left = expected_worked_minutes - worked_minutes
