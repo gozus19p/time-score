@@ -50,6 +50,6 @@ total_minutes_left = expected_worked_minutes - worked_minutes
 if total_minutes_left < 0:
     print("You are working extra hours!")
 
-hours_left = total_minutes_left / 60
+hours_left = int(total_minutes_left / 60)
 minutes_left = total_minutes_left % 60
 print(f"Working time left: {hours_left}h, {minutes_left}m")
