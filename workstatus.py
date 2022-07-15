@@ -44,15 +44,14 @@ for issue_file in logged_issues:
 
     if add_work_minutes:
         worked_minutes += difference_in_minutes
-    else:
-        worked_minutes -= difference_in_minutes
 
 expected_worked_minutes = 60 * 8
 total_minutes_left = expected_worked_minutes - worked_minutes
 
 if total_minutes_left < 0:
-    print("You are working extra hours!")
+    print("You are working extra hours. Go home buddy!")
+else:
+    hours_left = int(total_minutes_left / 60)
+    minutes_left = total_minutes_left % 60
+    print(f"Working time left: {hours_left}h, {minutes_left}m")
 
-hours_left = int(total_minutes_left / 60)
-minutes_left = total_minutes_left % 60
-print(f"Working time left: {hours_left}h, {minutes_left}m")
