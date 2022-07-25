@@ -1,5 +1,0 @@
-
-1) fare in modo che quando si genera il report, venga eliminato il file precedente;
-2) fare in modo di distinuere tutto ciò che si genera in sede di output (direzionando l'output nella cartella 'out');
-3) fare in modo che, a valle della generazione del report, venga aperto tramite il programma libre office calc.
-
