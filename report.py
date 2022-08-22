@@ -1,31 +1,30 @@
-import os
 import datetime
+import os
 
-directory_name = format(datetime.datetime.now(), '%Y-%m-%d')
+from common_functions import read_start_trace, update_git
+from report_functions import prepare_archive
 
-# Clearing the history of the day before
-archive_subdirectories = os.listdir('archive')
-directory_needs_to_be_created = not archive_subdirectories.__contains__(directory_name)
+now = datetime.datetime.now()
+month_directory = format(now, '%Y-%m-%d')
+day_directory = format(now, '%Y-%m')
 
-# Creating directory if needed
-if directory_needs_to_be_created:
-    print(f'Creating directory under archive for the day {directory_name}...')
-    os.mkdir(f'archive/{directory_name}')
+prepare_archive(archive_name=month_directory, subdirectory_name=day_directory)
 
 # Capturing logged issues
 logged_issues = os.listdir('issues')
 logged_issues.sort()
 
-start_time = datetime.datetime.strptime(open('start-trace.txt', 'r').read(), '%Y-%m-%d %H:%M:%S.%f')
+start_time = read_start_trace()
 
 time_before = None
-report = open(f'report/{directory_name}.csv', 'w')
-report.write("Issue;Total time;\n")
+report = open(f'report/{month_directory}.csv', 'w')
+report.write("Issue;Total time\n")
+
 for issue_file in logged_issues:
 
     # Copying file inside target directory
     opened_file = open(f'issues/{issue_file}', 'r')
-    write_file = open(f'archive/{directory_name}/{issue_file}', 'w')
+    write_file = open(f'archive/{month_directory}/{day_directory}/{issue_file}', 'w')
 
     # Reading issue time
     issue_time = opened_file.read()
@@ -55,14 +54,10 @@ for issue_file in logged_issues:
 
     issue_detail = issue_name.split("-")
     if len(issue_detail) == 3:
-        report.write(f'{issue_detail[1].upper()}-{issue_detail[2]};{hours_of_work}h {minutes}m;\n')
+        report.write(f'{issue_detail[1].upper()}-{issue_detail[2]};{hours_of_work}h {minutes}m\n')
     else:
-        report.write(f'{issue_detail[1].upper()};{hours_of_work}h {minutes}m;\n')
+        report.write(f'{issue_detail[1].upper()};{hours_of_work}h {minutes}m\n')
 
-
-os.system("git add . > /dev/null")
-os.system("git commit -m \"Aggiornamento bash;\" > /dev/null")
-os.system("git push > /dev/null")
-os.system(f"libreoffice --calc report/{directory_name}.csv &")
+update_git()
+os.system(f"libreoffice --calc report/{month_directory}.csv &")
 print('Report has been generated successfully')
-
