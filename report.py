@@ -5,8 +5,8 @@ from common_functions import read_start_trace, update_git
 from report_functions import prepare_archive
 
 now = datetime.datetime.now()
-month_directory = format(now, '%Y-%m-%d')
-day_directory = format(now, '%Y-%m')
+day_directory = format(now, '%Y-%m-%d')
+month_directory = format(now, '%Y-%m')
 
 prepare_archive(archive_name=month_directory, subdirectory_name=day_directory)
 
