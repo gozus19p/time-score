@@ -14,6 +14,7 @@ prepare_archive(archive_name=month_directory, subdirectory_name=day_directory)
 logged_issues = os.listdir('issues')
 logged_issues.sort()
 
+print(f"A total of {len(logged_issues)} issue(s) has been found")
 start_time = read_start_trace()
 
 time_before = None
