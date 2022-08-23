@@ -2,6 +2,11 @@ import os
 
 
 def prepare_archive(archive_name, subdirectory_name):
+    """
+    Prepara le directory utili alla creazione dell'archivio.
+    :param archive_name: è il nome dell'archivio, inteso come livello più basso di directory
+    :param subdirectory_name: è il nome della sotto-directory dell'archivio
+    """
     # Clearing the history of the day before
     archive_subdirectories = os.listdir('archive')
     create_archive = not archive_subdirectories.__contains__(archive_name)

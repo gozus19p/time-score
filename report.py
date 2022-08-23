@@ -1,7 +1,7 @@
 import datetime
 import os
 
-from common_functions import read_start_trace, update_git
+from common_functions import read_start_trace, update_git, calculate_difference_in_minutes
 from report_functions import prepare_archive
 
 now = datetime.datetime.now()
@@ -31,26 +31,12 @@ for issue_file in logged_issues:
     issue_name = issue_file.replace(".txt", "")
     write_file.write(issue_time)
 
-    issue_datetime = datetime.datetime.strptime(issue_time, '%Y-%m-%d %H:%M:%S.%f')
-
-    # Parsing the before date and time
-    if time_before is not None:
-        before_datetime = time_before
-    else:
-        before_datetime = start_time
-
-    time_before = issue_datetime
-
-    # Calculating total minutes before and after
-    after_minutes = issue_datetime.hour * 60 + issue_datetime.minute
-    before_minutes = before_datetime.hour * 60 + before_datetime.minute
-
-    # Calculating difference in minutes
-    difference_in_minutes = after_minutes - before_minutes
+    difference = calculate_difference_in_minutes(issue_time, time_before, start_time)
+    time_before = difference.time_before
 
     # Detecting hours and minutes
-    hours_of_work = int(difference_in_minutes / 60)
-    minutes = difference_in_minutes % 60
+    hours_of_work = int(difference.difference_in_minutes / 60)
+    minutes = difference.difference_in_minutes % 60
 
     issue_detail = issue_name.split("-")
     if len(issue_detail) == 3:
