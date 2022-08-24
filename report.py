@@ -18,7 +18,7 @@ print(f"A total of {len(logged_issues)} issue(s) has been found")
 start_time = read_start_trace()
 
 time_before = None
-report = open(f'report/{month_directory}.csv', 'w')
+report = open(f'report/{day_directory}.csv', 'w')
 report.write("Issue;Total time\n")
 
 for issue_file in logged_issues:
@@ -46,5 +46,5 @@ for issue_file in logged_issues:
         report.write(f'{issue_detail[1].upper()};{hours_of_work}h {minutes}m\n')
 
 update_git()
-os.system(f"libreoffice --calc report/{month_directory}.csv &")
+os.system(f"libreoffice --calc report/{day_directory}.csv &")
 print('Report has been generated successfully')
