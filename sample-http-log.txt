@@ -1,0 +1,10 @@
+POST https://jira.u-gov.it/jira/rest/api/2/issue/CLASSE-32/worklog
+Accept: application/json
+Authorization: Basic bWFudWVsLmdvenppQGNpbmVjYS5pdDpnckJPMjE/MTk5Nw==
+Content-Type: application/json
+
+{
+  "timeSpent": "2h 41m",
+  "comment": "Formazione",
+  "started": "2023-02-01T12:34:00.000+0000"
+}
