@@ -58,7 +58,7 @@ def log_time(issue: str, time: str, date: str, token: str, jira_url: str):
     # Log the time
     url = jira_url.format(issue)
     date_formatted = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-    print(f"Logging [{time}] of time spent on issue [{issue}] at [{date_formatted}]... ", end="")
+    print(f"Logging [{time}] of time spent on issue [{issue}] at [{date_formatted}] on [{url}]... ", end="")
     last_trace_handler.write_last_trace(date)
 
     response = requests.post(
