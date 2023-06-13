@@ -1,0 +1,5 @@
+[u-gov]
+url = "https://jira.u-gov.it/jira/rest/api/2/issue/{}/worklog"
+
+[mipa]
+url = "https://jira-mipa.cineca.it/jira/rest/api/2/issue/{}/worklog"

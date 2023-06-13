@@ -1,9 +1,13 @@
 import datetime
 import json
 import os
-import sys
-
 import requests
+import sys
+import toml
+
+import last_trace_handler
+
+CONFIG = toml.load(os.path.join(os.path.dirname(__file__), "config.toml"))
 
 
 def calculate_time(issue: str) -> str:
@@ -11,8 +15,7 @@ def calculate_time(issue: str) -> str:
     Calculate the time spent on the issue.
     :return: The time spent on the issue.
     """
-    with open(os.path.join(os.path.dirname(__file__), "last-trace.txt"), "r") as f:
-        date_str = f.read()
+    date_str = last_trace_handler.read_last_trace()
     last_trace_date = datetime.datetime.fromisoformat(date_str[0:23])
 
     # Check if the last trace is from today
@@ -43,20 +46,20 @@ def read_token() -> str:
         return token_file.read().strip()
 
 
-def log_time(issue: str, time: str, date: str, token: str):
+def log_time(issue: str, time: str, date: str, token: str, jira_url: str):
     """
     Log the time on the issue.
     :param issue: The issue.
     :param time: The time.
     :param date: The date.
     :param token: The token.
+    :param jira_url: The url of the jira instance.
     """
     # Log the time
-    url = f"https://jira-mipa.cineca.it/jira/rest/api/2/issue/{issue}/worklog"
+    url = jira_url.format(issue)
     date_formatted = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     print(f"Logging [{time}] of time spent on issue [{issue}] at [{date_formatted}]... ", end="")
-    with open(os.path.join(os.path.dirname(__file__), "last-trace.txt"), "w") as last_trace:
-        last_trace.write(date)
+    last_trace_handler.write_last_trace(date)
 
     response = requests.post(
         url=url,
@@ -78,19 +81,56 @@ def log_time(issue: str, time: str, date: str, token: str):
     pass
 
 
+def get_endpoint_url(endpoint_alias: str):
+    """
+    Get the endpoint url from the alias.
+    :param endpoint_alias: The alias.
+    :return: The url.
+    """
+    if endpoint_alias not in CONFIG:
+        raise Exception(f"Endpoint '{endpoint_alias}' not found in the config file.")
+    if "url" not in CONFIG[endpoint_alias]:
+        raise Exception(f"Endpoint '{endpoint_alias}' does not have a 'url' field in the config file.")
+    return CONFIG[endpoint_alias]["url"]
+
+
 if __name__ == '__main__':
+
+    error = False
     # Check arguments
-    if len(sys.argv) != 2 and len(sys.argv) != 3:
+    if len(sys.argv) < 2:
         print("Not enough arguments")
+        error = True
+
+    if len(sys.argv) > 5:
+        print("Too many arguments")
+        error = True
+
+    if error:
+        print("Usage: python jira-log.py <issue> [-t=<time>] [-e=<type>]")
         exit(1)
 
-    # Get issue and time
-    ISSUE = sys.argv[1].strip().upper()
+    type = "mipa"
+    jira_url = None
+    time = None
+    issue = None
+    for arg in sys.argv[1:]:
+        if arg.strip().startswith("-e="):
+            type = arg.strip().split("=")[1].strip().lower()
+            jira_url = get_endpoint_url(type)
+        if arg.strip().startswith("-t="):
+            time = arg.strip().split("=")[1].strip().lower().replace("'", "").replace('"', "")
+        if not arg.strip().startswith("-"):
+            if issue is not None:
+                print("Too many issues")
+                print("Usage: python jira-log.py <issue> [-t=<time>] [-e=<type>]")
+                exit(1)
+            issue = arg.strip().upper()
 
     # If the time is provided by the user, use it, otherwise calculate it based on the last trace
-    TIME = sys.argv[2] if len(sys.argv) == 3 else calculate_time(ISSUE)
+    TIME = time if time is not None else calculate_time(issue)
     TOKEN = read_token()
 
     # Log the time
     date = f"{datetime.datetime.now().isoformat()[0:23]}+0000"
-    log_time(ISSUE, TIME, date, TOKEN)
+    log_time(issue, TIME, date, TOKEN, jira_url)
