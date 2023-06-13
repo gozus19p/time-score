@@ -117,7 +117,6 @@ if __name__ == '__main__':
     for arg in sys.argv[1:]:
         if arg.strip().startswith("-e="):
             type = arg.strip().split("=")[1].strip().lower()
-            jira_url = get_endpoint_url(type)
         if arg.strip().startswith("-t="):
             time = arg.strip().split("=")[1].strip().lower().replace("'", "").replace('"', "")
         if not arg.strip().startswith("-"):
@@ -126,6 +125,7 @@ if __name__ == '__main__':
                 print("Usage: python jira-log.py <issue> [-t=<time>] [-e=<type>]")
                 exit(1)
             issue = arg.strip().upper()
+    jira_url = get_endpoint_url(type)
 
     # If the time is provided by the user, use it, otherwise calculate it based on the last trace
     TIME = time if time is not None else calculate_time(issue)
